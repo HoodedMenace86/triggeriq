@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {"id":"GH-AUTH-001","severity":"critical","status":"unknown","title":"Strong authentication / MFA enabled"},
+    {"id":"GH-AUTH-002","severity":"high","status":"unknown","title":"Authentication methods reviewed"},
+    {"id":"GH-REC-001","severity":"high","status":"unknown","title":"Recovery methods reviewed"},
+    {"id":"GH-TOK-001","severity":"critical","status":"unknown","title":"Personal access tokens reviewed"},
+    {"id":"GH-SSH-001","severity":"high","status":"unknown","title":"SSH keys reviewed"},
+    {"id":"GH-PUB-001","severity":"high","status":"pass","title":"Unexpected public repositories"},
+    {"id":"GH-PUB-002","severity":"medium","status":"pass","title":"Unexpected public profile surface"},
+    {"id":"GH-REPO-001","severity":"high","status":"not_applicable","title":"Repository branch protection reviewed"},
+    {"id":"GH-REPO-002","severity":"high","status":"not_applicable","title":"Repository collaborator/access review"},
+    {"id":"GH-SEC-001","severity":"critical","status":"not_applicable","title":"Secret exposure indicators reviewed"},
+    {"id":"GH-APP-001","severity":"high","status":"unknown","title":"Third-party application access reviewed"},
+    {"id":"GH-ORG-001","severity":"high","status":"not_applicable","title":"Organization membership/access reviewed"},
+    {"id":"GH-ACT-001","severity":"high","status":"unknown","title":"Unexpected account activity reviewed"}
+  ]
+}
