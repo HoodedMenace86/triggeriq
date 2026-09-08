@@ -1,0 +1,108 @@
+version: "0.1"
+name: "TriggerIQ GitHub Security Triggers"
+purpose: "Evidence-backed GitHub security posture checks with explicit visibility boundaries."
+
+triggers:
+  - id: GH-AUTH-001
+    title: "Strong authentication / MFA enabled"
+    severity: critical
+    detection_method: manual
+    current_visibility: "Manual unless account-security scope exposes the control"
+    remediation: "Enable GitHub two-factor authentication and retain appropriate recovery options."
+    evidence_required: "Account security settings showing 2FA enabled."
+
+  - id: GH-AUTH-002
+    title: "Authentication methods reviewed"
+    severity: high
+    detection_method: manual
+    current_visibility: "Complete authentication-method inventory may be unavailable"
+    remediation: "Review passkeys, security keys, SSH keys, PATs, and other authentication methods; remove stale entries."
+    evidence_required: "Human review of account authentication/security settings."
+
+  - id: GH-REC-001
+    title: "Recovery methods reviewed"
+    severity: high
+    detection_method: manual
+    current_visibility: "Typically manual under limited connector scopes"
+    remediation: "Verify recovery mechanisms are current and controlled."
+    evidence_required: "Human review of recovery/security settings; never store recovery secrets."
+
+  - id: GH-TOK-001
+    title: "Personal access tokens reviewed"
+    severity: critical
+    detection_method: manual
+    current_visibility: "Token inventory/details may be unavailable under limited scopes"
+    remediation: "Review active tokens, minimize permissions, set expiration, and revoke unused tokens."
+    evidence_required: "Token metadata only; never record token values."
+
+  - id: GH-SSH-001
+    title: "SSH keys reviewed"
+    severity: high
+    detection_method: manual
+    current_visibility: "May be unavailable through the connector"
+    remediation: "Remove unknown or stale keys and verify remaining keys are intentional."
+    evidence_required: "Human-visible SSH key inventory."
+
+  - id: GH-PUB-001
+    title: "Unexpected public repositories"
+    severity: high
+    detection_method: API
+    current_visibility: "Public repository surface is generally observable"
+    remediation: "Review every public repository and make visibility intentional."
+    evidence_required: "Repository inventory with visibility and owner."
+
+  - id: GH-PUB-002
+    title: "Unexpected public profile surface"
+    severity: medium
+    detection_method: API
+    current_visibility: "Public profile/repository surface is partially observable"
+    remediation: "Review public profile information and exposed repository metadata."
+    evidence_required: "Captured public profile/repository inventory."
+
+  - id: GH-REPO-001
+    title: "Repository branch protection reviewed"
+    severity: high
+    detection_method: API
+    current_visibility: "May require repository administration permissions"
+    remediation: "Enable appropriate branch protections/rulesets."
+    evidence_required: "Repository rules/ruleset configuration."
+
+  - id: GH-REPO-002
+    title: "Repository collaborator/access review"
+    severity: high
+    detection_method: API
+    current_visibility: "Complete access inventory may require elevated permissions"
+    remediation: "Review direct collaborators, teams, and effective write/admin access."
+    evidence_required: "Repository access inventory with role information."
+
+  - id: GH-SEC-001
+    title: "Secret exposure indicators reviewed"
+    severity: critical
+    detection_method: API
+    current_visibility: "Security-alert visibility depends on repository features and permissions"
+    remediation: "Enable appropriate secret scanning and investigate confirmed exposures."
+    evidence_required: "Security-alert state; never store exposed secret values."
+
+  - id: GH-APP-001
+    title: "Third-party application access reviewed"
+    severity: high
+    detection_method: manual
+    current_visibility: "Complete authorized-application scope may be unavailable"
+    remediation: "Review authorized OAuth/GitHub Apps and revoke unnecessary access."
+    evidence_required: "Human-visible authorized application list."
+
+  - id: GH-ORG-001
+    title: "Organization membership/access reviewed"
+    severity: high
+    detection_method: API
+    current_visibility: "May require organization scope"
+    remediation: "Review organizations, teams, and elevated roles."
+    evidence_required: "Organization/team membership and role inventory."
+
+  - id: GH-ACT-001
+    title: "Unexpected account activity reviewed"
+    severity: high
+    detection_method: manual
+    current_visibility: "Complete human-level activity context is not available through limited connectors"
+    remediation: "Review recent sessions/activity and investigate unexpected events."
+    evidence_required: "Human review of available GitHub security/activity history."
