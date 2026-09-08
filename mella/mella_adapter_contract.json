@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1",
+  "producer": "TriggerIQ",
+  "consumer": "MELLA",
+  "authority": "MELLA",
+  "kernel_baseline": "MELLA_UNIFIED_CONSEQUENCE_READINESS_ROUTE_KERNEL_v0.3.4",
+  "adapter_status": "public-contract-only",
+  "rules": {
+    "unknown_is_not_pass": true,
+    "integer_core_required": true,
+    "canonical_serialization_kernel_owned": true,
+    "receipt_replay_kernel_owned": true,
+    "route_precedence": ["BLOCK", "CONTAIN", "ABSTAIN", "REVIEW", "DEFER", "LIMIT", "RELEASE"]
+  },
+  "evidence_vector": ["H", "A", "R", "D", "E", "P", "V", "U", "K", "KC", "AG", "RC", "EQ", "DR", "RE", "RP", "TS", "CP", "FI"],
+  "derived_metrics": ["C", "Q", "M", "RF", "PI", "AR", "FI"],
+  "observation": {
+    "required": ["observation_id", "source", "check_id", "status", "severity", "provenance"],
+    "statuses": ["pass", "fail", "unknown", "not_applicable"],
+    "provenance_required": true
+  },
+  "known_open_dependency": {
+    "id": "PACKET_2_FINDING_001",
+    "description": "Monotonicity discontinuity at M >= 0.35 boundary; must be resolved or explicitly accepted by the authoritative kernel test/spec layer before relying on the boundary for automated routing."
+  }
+}
