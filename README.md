@@ -22,6 +22,8 @@ Not a full SIEM/SOAR, generic AI trigger engine, social-content intelligence pro
 - `examples/sample_assessment.json` — example input
 - `tests/test_scorer.py` — regression tests
 - `docs/MELLA_KERNEL_INTEGRATION_v0.1.md` — MELLA compatibility contract for governed routing
+- `docs/MELLA_PUBLIC_RELEASE_BOUNDARY_v0.1.md` — public release boundary for MELLA
+- `docs/UNIVERSAL_MACHINE_MATH_PUBLIC_RELEASE_BOUNDARY_v0.1.md` — public release boundary for Universal Machine Math
 - `docs/CONTROL_BOUNDARY.md` — public/private and evidence-boundary rules
 - `mella/mella_adapter_contract.json` — machine-readable adapter contract
 
