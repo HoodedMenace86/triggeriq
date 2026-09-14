@@ -1,7 +1,7 @@
 # TriggerIQ and MELLA compatibility contract
 
 This existing document path is retained for links. The machine-readable
-contract is now **schema 0.2**; it supersedes the unverified baseline claims
+contract is now **schema 0.3**; it supersedes the unverified baseline claims
 in the original v0.1 document. Consumers must explicitly review the schema
 change. Automated routing remains **HOLD**.
 
@@ -21,8 +21,11 @@ Later draft doctrine is supporting context, not a substitute release.
 
 Observation statuses remain `pass`, `fail`, `unknown`, `not_applicable`.
 Required observation fields remain `observation_id`, `source`, `check_id`,
-`status`, `severity`, and `provenance`. This describes an upstream envelope;
-it is not yet a runtime-validated schema or an executable vector mapping.
+`status`, `severity`, and `provenance`. Schema 0.3 adds an executable upstream
+structure review using the contract's provenance rules. Pass/fail/not-applicable
+claims require an evidence reference, and unknowns require a visibility
+explanation. Reference presence does not verify truth or applicability.
+No executable vector mapping is defined. See [observation review](OBSERVATION_REVIEW.md).
 
 The reference requires the ordered 19-field input vector:
 

@@ -12,6 +12,8 @@ ORDER = {"critical": 0, "high": 1, "medium": 2}
 
 
 def score(assessment: dict) -> dict:
+    if not isinstance(assessment, dict):
+        raise ValueError("Assessment must be an object")
     checks = assessment.get("checks", [])
     if not isinstance(checks, list):
         raise ValueError("'checks' must be a list")
@@ -19,20 +21,28 @@ def score(assessment: dict) -> dict:
     maximum = penalty = 0.0
     open_triggers, unknown = [], []
     counts = {"critical": 0, "high": 0, "medium": 0}
+    seen_ids = set()
+    applicable = 0
 
     for check in checks:
+        if not isinstance(check, dict):
+            raise ValueError("Every check must be an object")
         cid = check.get("id")
-        severity = check.get("severity", "medium")
+        severity = check.get("severity")
         status = check.get("status")
-        if not cid:
-            raise ValueError("Every check requires an id")
-        if severity not in SEVERITY_WEIGHT:
+        if not isinstance(cid, str) or not cid.strip() or cid != cid.strip():
+            raise ValueError("Every check requires a nonempty, unpadded string id")
+        if cid in seen_ids:
+            raise ValueError(f"Duplicate check id: {cid}")
+        seen_ids.add(cid)
+        if not isinstance(severity, str) or severity not in SEVERITY_WEIGHT:
             raise ValueError(f"{cid}: invalid severity {severity!r}")
-        if status not in STATUS_PENALTY:
+        if not isinstance(status, str) or status not in STATUS_PENALTY:
             raise ValueError(f"{cid}: invalid status {status!r}")
 
         weight = SEVERITY_WEIGHT[severity]
         if status != "not_applicable":
+            applicable += 1
             maximum += weight
             penalty += weight * STATUS_PENALTY[status]
 
@@ -52,16 +62,27 @@ def score(assessment: dict) -> dict:
                 "required_action": "Manual verification required",
             })
 
-    posture_score = 100.0 if maximum == 0 else 100.0 * (1.0 - penalty / maximum)
+    posture_score = None if maximum == 0 else 100.0 * (1.0 - penalty / maximum)
+    if applicable == 0:
+        assessment_status = "not_assessed"
+    elif open_triggers:
+        assessment_status = "action_required"
+    elif unknown:
+        assessment_status = "verification_required"
+    else:
+        assessment_status = "observed_checks_pass"
     return {
-        "score": round(max(0.0, min(100.0, posture_score)), 2),
+        "schema_version": "0.2",
+        "score": None if posture_score is None else round(max(0.0, min(100.0, posture_score)), 2),
+        "assessment_status": assessment_status,
+        "applicable_checks": applicable,
         "checks_evaluated": len(checks),
         "open_trigger_count": len(open_triggers),
         "unknown_count": len(unknown),
         "failed_by_severity": counts,
         "open_triggers": sorted(open_triggers, key=lambda x: (ORDER[x["severity"]], x["id"])),
         "manual_verification": sorted(unknown, key=lambda x: (ORDER[x["severity"]], x["id"])),
-        "interpretation": "Heuristic posture score. Unknown controls are not treated as secure.",
+        "interpretation": "Heuristic over supplied checks only; coverage and evidence truth are not verified. No applicable checks means no score. Unknown controls are not treated as secure.",
     }
 
 

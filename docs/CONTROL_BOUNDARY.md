@@ -39,7 +39,7 @@ candidate models, and proof corpora must stay outside this repository.
 Keep any reference checkout in a separate directory. The optional verifier
 accepts an external path; it must not download or vendor the kernel.
 
-A reference-check PASS is not integration approval. Schema 0.2 records
+A reference-check PASS is not integration approval. The current contract records
 unmet numeric, version, mapping, serialization, and governance dependencies;
 neither a high posture score nor a RELEASE route can clear that HOLD.
 

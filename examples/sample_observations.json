@@ -1,0 +1,31 @@
+{
+  "example_only": true,
+  "observations": [
+    {
+      "observation_id": "synthetic-public-visibility-1",
+      "source": "github",
+      "check_id": "GH-PUB-001",
+      "status": "pass",
+      "severity": "high",
+      "provenance": {
+        "method": "API",
+        "scope": "synthetic-public-repository-inventory",
+        "source_version": "example-1",
+        "evidence_ref": "synthetic:inventory-reviewed"
+      }
+    },
+    {
+      "observation_id": "synthetic-mfa-1",
+      "source": "github",
+      "check_id": "GH-AUTH-001",
+      "status": "unknown",
+      "severity": "critical",
+      "provenance": {
+        "method": "connector",
+        "scope": "synthetic-limited-account-visibility",
+        "source_version": "example-1",
+        "visibility_limit": "Synthetic example: the connector cannot establish whether MFA is enabled."
+      }
+    }
+  ]
+}

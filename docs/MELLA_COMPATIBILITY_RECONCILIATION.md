@@ -1,5 +1,8 @@
 # MELLA compatibility reconciliation — 2026-09-14
 
+Historical reconciliation at commit `f68d2d78b1f85ea4d1924c50e94dde856f48dbfc`.
+For subsequent upstream checks and scorer changes, see [observation review](OBSERVATION_REVIEW.md).
+
 **Result: v0.3.4 reference identity and selected behavior verified; automated
 integration HOLD. v0.3.5 remains unverified.**
 

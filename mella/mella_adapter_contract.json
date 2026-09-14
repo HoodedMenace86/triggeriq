@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.2",
+  "schema_version": "0.3",
   "producer": "TriggerIQ",
   "consumer": "MELLA",
   "authority": "MELLA",
@@ -127,7 +127,31 @@
       "unknown",
       "not_applicable"
     ],
-    "provenance_required": true
+    "provenance_required": true,
+    "severities": [
+      "critical",
+      "high",
+      "medium"
+    ],
+    "provenance_required_fields": [
+      "method",
+      "scope",
+      "source_version"
+    ],
+    "provenance_methods": [
+      "manual",
+      "API",
+      "connector"
+    ],
+    "status_provenance_requirements": {
+      "pass": "evidence_ref",
+      "fail": "evidence_ref",
+      "not_applicable": "evidence_ref",
+      "unknown": "visibility_limit"
+    },
+    "validation_scope": "structure-and-reference-presence-only",
+    "evidence_truth_verified_by_validator": false,
+    "observation_to_kernel_mapping_defined": false
   },
   "serialization": {
     "owner": "MELLA",

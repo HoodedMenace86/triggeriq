@@ -44,9 +44,9 @@ v0.3.5 and canonical receipt replay remain unverified. Route precedence and
 the 19 required fields are verified, with unpatched monotonicity findings.
 Passing public tests does not authorize automated routing.
 
-The current [adapter contract](mella/mella_adapter_contract.json) is schema 0.2.
-It supplies compatibility metadata; an executable observation-to-vector
-adapter is not yet bound.
+The current [adapter contract](mella/mella_adapter_contract.json) is schema 0.3.
+It supplies compatibility metadata and upstream observation validation rules;
+an executable observation-to-vector adapter is not yet bound.
 
 ## Run
 
@@ -65,6 +65,28 @@ Scoring:
 `score = 100 × (1 - observed_penalty / maximum_applicable_penalty)`
 
 A failed check receives its full severity weight; an unknown check receives half weight. This is a posture heuristic, not a security guarantee.
+
+Scorer output schema 0.2 uses `score: null` and `assessment_status: not_assessed`
+when no applicable checks exist. Consumers must handle a nullable score.
+Malformed checks, duplicate check IDs, and missing severities are rejected.
+Scores cover only the checks supplied; even 100 is not an account-wide
+security certificate or MELLA release approval.
+
+## Review observations
+
+```bash
+python mella/review_observations.py examples/sample_observations.json
+```
+
+This synthetic example records a visible public-inventory check alongside
+MFA that the connector cannot verify. The result keeps MFA `unknown` and
+requests manual verification. Pass/fail/not-applicable claims require an
+evidence reference; unknowns require a visibility explanation. Missing or
+malformed provenance is reported as invalid.
+
+The review validates structure and reference presence only. It does not
+inspect referenced evidence, convert observations into kernel values, or
+authorize routing. See [the workflow and problem it solves](docs/OBSERVATION_REVIEW.md).
 
 ## Compatibility checks
 

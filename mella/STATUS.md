@@ -2,6 +2,12 @@
 
 **HOLD — reference audited; runtime integration remains unbound.**
 
+The public observation review now validates upstream record structure and
+provenance-reference presence under contract schema 0.3. It preserves
+unknowns and lists the existing integration blockers. This is not an
+observation-to-kernel mapping or a verification of evidence truth. Empty
+scorer assessments now return no score instead of 100.
+
 The 2026-09-14 reconciliation directly tested the recovered v0.3.4 kernel
 with SHA-256 `cb20f2bb433723f153b84cb87c040bdc83824360112fb7c86a7f8616dec1b494`.
 The archive receipt agrees with this hash. A kernel source commit and an
