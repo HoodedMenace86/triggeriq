@@ -1,0 +1,120 @@
+{
+  "schema_version": "0.1",
+  "assessment_date": "2026-09-14",
+  "assessment": "sanitized-compatibility-reconciliation",
+  "public_baseline_commit": "f0b90b14e99367f4684ee07cb0b22556631bfe93",
+  "reference": {
+    "version": "v0.3.4",
+    "artifact": "mella_unified_kernel.py",
+    "sha256": "cb20f2bb433723f153b84cb87c040bdc83824360112fb7c86a7f8616dec1b494",
+    "archive": "MELLA_KERNEL_v0.3.4.zip",
+    "archive_sha256": "540540449ff4214039b4ab809c58ab958899b01ae0b2eb962fa959f59ecee804",
+    "source_commit_sha": null,
+    "identity_status": "hash-verified-recovered-reference",
+    "release_authority_verified": false,
+    "v0_3_5": {
+      "status": "not-located",
+      "artifact_sha256": null,
+      "compatibility_verified": false
+    }
+  },
+  "original_receipt_sha256": "1ec31d92b513f59b89ea1a5aff996bfd41a36e1ccb17187ec06aae8aad4fc641",
+  "archive_receipt_hashes": {
+    "tracked_files_checked": 6,
+    "matches": 6,
+    "receipt_sidecar_matches": true
+  },
+  "recovery_manifest": {
+    "files_checked": 15,
+    "matches": 15
+  },
+  "execution_environment": {
+    "python": "3.12.14",
+    "os": "Windows 10",
+    "pytest": "9.1.1"
+  },
+  "kernel_tests": {
+    "passed": 42,
+    "failed": 0,
+    "scope": "recovered v0.3.4 kernel suite, including 1064 single-field corruptions"
+  },
+  "application_and_adversarial_replay": {
+    "semantic_match": true,
+    "same_runtime_bytes_equal": true,
+    "original_bytes_equal": false,
+    "lf_normalized_bytes_equal": true,
+    "fresh_sha256": "7f2d645d947692d7efc637e0875a36ff89bced82d437208c2a6d3682a0bc2033",
+    "original_sha256": "d6b953ec865cb0d98a7d0f11d48c86fec6f083e11e704da63e94c6ab3350d01a",
+    "case_counts": {
+      "application": 8,
+      "adversarial": 14
+    },
+    "expectations_met": true,
+    "receipt_bytes_equal": false
+  },
+  "candidate_harness_semantic_replay_matches_excluding_timestamp": true,
+  "literal_vs_historical_proxy": {
+    "cases": 100000,
+    "seed": 20260806,
+    "route_mismatches": 0,
+    "candidate_set_mismatches": 0,
+    "rounded_metric_mismatch_cases": 100000,
+    "full_response_byte_parity_claimed": false
+  },
+  "signed_monotonicity": {
+    "fields": 19,
+    "base_vectors_per_field": 30,
+    "steps": 25,
+    "seed": 13,
+    "evaluations": 14250,
+    "violations": 2,
+    "violating_fields": [
+      "E",
+      "KC"
+    ],
+    "status": "FAIL",
+    "scope": "sampled well-formed signed changes; distinct from malformed-input corruption tests"
+  },
+  "candidate_simulations": {
+    "sample_count": 100000,
+    "seed": 20260806,
+    "A1": {
+      "changed_routes": 508,
+      "percent": 0.508,
+      "sampled_monotonicity_violations": 0,
+      "applied": false
+    },
+    "A2": {
+      "changed_routes": 3539,
+      "percent": 3.539,
+      "sampled_monotonicity_violations": 0,
+      "applied": false
+    },
+    "baseline": "literal hash-verified v0.3.4",
+    "variants": "unchanged historical private candidate definitions",
+    "universal_monotonicity_proved": false
+  },
+  "literal_repeat_determinism": {
+    "vectors": 25,
+    "repeats": 100,
+    "seed": 99,
+    "stable": true,
+    "scope": "route and C/Q/M repeat stability"
+  },
+  "v0_3_5_verified": false,
+  "canonical_receipt_replay_verified": false,
+  "kernel_modified": false,
+  "private_code_published": false,
+  "proof_corpus_published": false,
+  "automated_routing_allowed": false,
+  "status": "HOLD",
+  "public_tests": {
+    "with_reference_passed": 14,
+    "with_reference_failed": 0,
+    "without_reference_passed": 13,
+    "without_reference_skipped": 1,
+    "reference_candidate_subsets": 127,
+    "reference_missing_fields": 19,
+    "reference_malformed_values": 7
+  }
+}

@@ -37,6 +37,17 @@ TriggerIQ is an observation-and-trigger layer. It does **not** replace the MELLA
 
 See `docs/MELLA_KERNEL_INTEGRATION_v0.1.md` for the compatibility boundary.
 
+**Integration is on HOLD.** The [2026-09-14 reconciliation](docs/MELLA_COMPATIBILITY_RECONCILIATION.md)
+pins and directly tests the recovered v0.3.4 reference. That implementation
+uses Python floats; the original integer requirement remains unmet.
+v0.3.5 and canonical receipt replay remain unverified. Route precedence and
+the 19 required fields are verified, with unpatched monotonicity findings.
+Passing public tests does not authorize automated routing.
+
+The current [adapter contract](mella/mella_adapter_contract.json) is schema 0.2.
+It supplies compatibility metadata; an executable observation-to-vector
+adapter is not yet bound.
+
 ## Run
 
 ```bash
@@ -54,6 +65,20 @@ Scoring:
 `score = 100 × (1 - observed_penalty / maximum_applicable_penalty)`
 
 A failed check receives its full severity weight; an unknown check receives half weight. This is a posture heuristic, not a security guarantee.
+
+## Compatibility checks
+
+```bash
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
+python mella/verify_reference.py --kernel /private/path/mella_unified_kernel.py
+```
+
+The optional verifier requires the exact pinned source, verifies its hash
+before execution, and runs synthetic interface checks. It reports integration
+HOLD even when reference checks pass. To include these checks in pytest,
+set `MELLA_KERNEL_PATH` to that private file. Without it, the reference test
+is explicitly skipped. Keep the source outside this public checkout.
 
 ## Evidence discipline
 

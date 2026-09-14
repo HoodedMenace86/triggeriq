@@ -1,102 +1,92 @@
-# TriggerIQ ↔ MELLA Kernel Integration Contract v0.1
+# TriggerIQ and MELLA compatibility contract
 
-## Purpose
+This existing document path is retained for links. The machine-readable
+contract is now **schema 0.2**; it supersedes the unverified baseline claims
+in the original v0.1 document. Consumers must explicitly review the schema
+change. Automated routing remains **HOLD**.
 
-Define the public interface between TriggerIQ observations and the MELLA governance kernel without claiming that TriggerIQ is the kernel itself.
+## Authority and identity
 
-## Authority boundary
+TriggerIQ observes checks and preserves their provenance. MELLA owns metric
+computation, candidate eligibility, routing, serialization, and replay.
+No kernel implementation, reconstructed model, private case library, or
+candidate fix belongs in this public repository.
 
-TriggerIQ is upstream of governance:
+The recovered reference identifies itself as v0.3.4 and is pinned by
+SHA-256 in [the adapter contract](../mella/mella_adapter_contract.json).
+No v0.3.5 source/addendum artifact or kernel source commit was located.
+Later draft doctrine is supporting context, not a substitute release.
 
-`OBSERVE → NORMALIZE → EVIDENCE → MELLA GOVERNANCE → ROUTE`
+## Observations and evidence
 
-TriggerIQ may detect conditions and emit structured evidence. MELLA decides the governed disposition.
+Observation statuses remain `pass`, `fail`, `unknown`, `not_applicable`.
+Required observation fields remain `observation_id`, `source`, `check_id`,
+`status`, `severity`, and `provenance`. This describes an upstream envelope;
+it is not yet a runtime-validated schema or an executable vector mapping.
 
-TriggerIQ must not silently override, reinterpret, or replace MELLA route precedence.
+The reference requires the ordered 19-field input vector:
 
-## Known MELLA compatibility constraints
+`H, A, R, D, E, P, V, U, K, KC, AG, RC, EQ, DR, RE, RP, TS, CP, FI`
 
-The integration is designed around the current frozen MELLA kernel contract carried forward from the established v0.3.x work:
+Every field, including FI, is required. Missing/invalid values are malformed.
+TriggerIQ must retain missing evidence and must never insert zero, a score,
+or an invented value to complete a vector. The kernel's conservative shadow
+evaluation is its own malformed-input behavior; substituted values are not
+observations and must not be described as verified evidence.
 
-- Deterministic integer arithmetic in the core.
-- No floating-point dependency in core state transitions or governance decisions.
-- Canonical deterministic serialization for hashed artifacts.
-- Unknown evidence remains unknown; missing evidence is not a pass.
-- Receipt/replay semantics are outside TriggerIQ's authority.
-- Governance outcomes are inputs to downstream monitoring rather than mutable ledger state.
+`FI` is an input passed through to the response, not a derived metric.
+Derived response metrics are `C_linear, C, Q, M, RF, PI, AR`.
 
-## Evidence vector boundary
+## Numeric requirement versus observed implementation
 
-The current MELLA evidence model uses a 19-field evidence vector concept:
+The literal v0.3.4 reference accepts numeric int/float inputs in [0,1], rejects
+booleans and malformed values, and computes using Python floats. It routes
+on unrounded metrics and rounds response metrics to four decimal places.
 
-`(H, A, R, D, E, P, V, U, K, KC, AG, RC, EQ, DR, RE, RP, TS, CP, FI)`
+The old `integer_core_required` rule is retained as an **unmet integration
+requirement**, not a description of v0.3.4. No authoritative integer mapping
+was recovered. Do not implement a conversion or a second arithmetic model
+inside TriggerIQ to conceal this mismatch.
 
-Derived governance metrics include:
+## Route semantics
 
-`C, Q, M, RF, PI, AR, FI`
-
-TriggerIQ should supply only the evidence fields it can establish. It must not fabricate missing values to complete the vector.
-
-Where a TriggerIQ check is unavailable because GitHub/API/connector permissions do not expose the necessary control, the adapter should emit `unknown` and preserve provenance.
-
-## Route boundary
-
-The established MELLA route precedence is:
+Precedence among eligible candidates is:
 
 `BLOCK > CONTAIN > ABSTAIN > REVIEW > DEFER > LIMIT > RELEASE`
 
-TriggerIQ can recommend remediation severity, but MELLA remains authoritative for governed routing.
+Candidate eligibility is determined first. The reference evaluates RELEASE
+before LIMIT; LIMIT is eligible only when RELEASE is not. The precedence
+list alone is therefore insufficient to reproduce routing. An empty
+candidate set falls back to REVIEW. Malformed inputs exclude LIMIT and RELEASE;
+zero parseable fields produce ABSTAIN. Only the kernel evaluates these rules.
 
-## Kernel versioning
+The kernel always reports `release_allowed: false`. A route labeled RELEASE
+is not production authorization. Preserve the kernel's denied claims.
 
-The known frozen kernel baseline is **MELLA_UNIFIED_CONSEQUENCE_READINESS_ROUTE_KERNEL v0.3.4**.
+## Serialization and replay
 
-The v0.3.5 work adds an evidence-vector/addendum layer. This public TriggerIQ repository does not claim to contain the complete private kernel implementation or its complete proof/test corpus.
+Ownership remains with MELLA, but no canonical serializer contract was
+found in the v0.3.4 package. Its harness uses `json.dumps(indent=2)` and
+platform-default text writing; receipt generation inserts wall-clock time.
+Same-runtime result determinism was reproduced. Archived Windows byte
+identity and deterministic receipt bytes were not.
 
-That distinction is intentional.
+Do not replace this with a TriggerIQ serializer or label normalized JSON
+as original byte replay. A versioned canonical format, encoding/newline
+policy, timestamp scope, and authoritative implementation must be bound
+before claiming canonical cross-runtime replay.
 
-## Adapter contract
+## Findings and gate
 
-A TriggerIQ-to-MELLA adapter should normalize an observation to a structure equivalent to:
+FINDING_001 remains present: crossing a fallback boundary can violate signed
+monotonicity. Both the M >= 0.35 transition and a readiness RF >= 0.40
+transition reproduce. Passing malformed-input corruption tests does not
+establish signed monotonicity over well-formed inputs.
 
-```json
-{
-  "observation_id": "uuid-or-deterministic-id",
-  "source": "github",
-  "check_id": "GH-AUTH-001",
-  "status": "unknown",
-  "severity": "critical",
-  "observed_at": "deterministic timestamp supplied by the execution layer",
-  "evidence": {},
-  "provenance": {
-    "method": "manual",
-    "scope": "account-security-unavailable",
-    "source_version": "triggeriq-0.1"
-  }
-}
-```
+FINDING_002's RELEASE/LIMIT mechanism is verified; its governance intent is
+unresolved. No candidate fix or governance decision is adopted here.
 
-The actual MELLA receipt schema, canonical serializer, hashing rules, and replay logic remain kernel-owned artifacts and must be imported from their authoritative implementation rather than duplicated here.
-
-## Known open kernel finding
-
-The v0.3.x behavioral validation work identified a monotonicity discontinuity at the `M >= 0.35` boundary. This repository records that fact as an integration dependency; it does **not** silently patch or redefine the kernel threshold.
-
-Any change to that boundary belongs in the kernel's own versioned specification, vectors, and adversarial test suite.
-
-## Integration gate
-
-Before TriggerIQ observations are allowed to drive automated MELLA routing:
-
-1. Observation schema is frozen.
-2. Evidence provenance is present.
-3. Unknown/manual states survive normalization.
-4. Integer-domain conversion is deterministic.
-5. Canonical serialization is delegated to the authoritative kernel implementation.
-6. Replay produces byte-identical normalized observations.
-7. Route precedence is tested against boundary/collision cases.
-8. Adapter tests pass independently of the GitHub connector.
-
-## What this file does not claim
-
-This is a compatibility contract, not a copy of the MELLA kernel. A public TriggerIQ consumer must not infer that the complete private kernel, receipts, proofs, or test corpus are present in this repository.
+Before automated routing, resolve the explicit blockers in `integration_gate`
+and bind the approved version/hash, mapping, numeric contract, canonical
+serializer, and replay evidence. Public compatibility checks cannot clear
+this gate or grant authority. See [the reconciliation](MELLA_COMPATIBILITY_RECONCILIATION.md).

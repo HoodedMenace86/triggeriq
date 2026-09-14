@@ -1,26 +1,173 @@
 {
-  "schema_version": "0.1",
+  "schema_version": "0.2",
   "producer": "TriggerIQ",
   "consumer": "MELLA",
   "authority": "MELLA",
   "kernel_baseline": "MELLA_UNIFIED_CONSEQUENCE_READINESS_ROUTE_KERNEL_v0.3.4",
-  "adapter_status": "public-contract-only",
+  "adapter_status": "compatibility-audited-runtime-unbound",
+  "reference": {
+    "version": "v0.3.4",
+    "artifact": "mella_unified_kernel.py",
+    "sha256": "cb20f2bb433723f153b84cb87c040bdc83824360112fb7c86a7f8616dec1b494",
+    "archive": "MELLA_KERNEL_v0.3.4.zip",
+    "archive_sha256": "540540449ff4214039b4ab809c58ab958899b01ae0b2eb962fa959f59ecee804",
+    "source_commit_sha": null,
+    "identity_status": "hash-verified-recovered-reference",
+    "release_authority_verified": false,
+    "v0_3_5": {
+      "status": "not-located",
+      "artifact_sha256": null,
+      "compatibility_verified": false
+    }
+  },
   "rules": {
     "unknown_is_not_pass": true,
     "integer_core_required": true,
     "canonical_serialization_kernel_owned": true,
     "receipt_replay_kernel_owned": true,
-    "route_precedence": ["BLOCK", "CONTAIN", "ABSTAIN", "REVIEW", "DEFER", "LIMIT", "RELEASE"]
+    "route_precedence": [
+      "BLOCK",
+      "CONTAIN",
+      "ABSTAIN",
+      "REVIEW",
+      "DEFER",
+      "LIMIT",
+      "RELEASE"
+    ]
   },
-  "evidence_vector": ["H", "A", "R", "D", "E", "P", "V", "U", "K", "KC", "AG", "RC", "EQ", "DR", "RE", "RP", "TS", "CP", "FI"],
-  "derived_metrics": ["C", "Q", "M", "RF", "PI", "AR", "FI"],
+  "requirement_interpretation": {
+    "integer_core_required": "Retained integration requirement; NOT satisfied by the recovered v0.3.4 reference.",
+    "canonical_serialization_kernel_owned": "Authority boundary; NOT a claim that a canonical serializer was recovered.",
+    "receipt_replay_kernel_owned": "Authority boundary; NOT a claim of byte-identical receipts."
+  },
+  "numeric_contract": {
+    "observed_implementation": "python-float",
+    "input_domain": [
+      0,
+      1
+    ],
+    "accepted_input_types": [
+      "int",
+      "float"
+    ],
+    "booleans_accepted": false,
+    "nonfinite_values_accepted": false,
+    "numeric_strings_accepted": false,
+    "routing_uses_unrounded_metrics": true,
+    "response_decimal_places": 4,
+    "integer_core_verified": false,
+    "integer_conversion_defined": false
+  },
+  "evidence_vector": [
+    "H",
+    "A",
+    "R",
+    "D",
+    "E",
+    "P",
+    "V",
+    "U",
+    "K",
+    "KC",
+    "AG",
+    "RC",
+    "EQ",
+    "DR",
+    "RE",
+    "RP",
+    "TS",
+    "CP",
+    "FI"
+  ],
+  "evidence_contract": {
+    "field_count": 19,
+    "all_fields_required": true,
+    "FI_required": true,
+    "missing_values": "malformed",
+    "adapter_must_not_impute": true,
+    "kernel_shadow_substitution_is_observed_evidence": false,
+    "observation_to_vector_mapping": "unbound"
+  },
+  "derived_metrics": [
+    "C_linear",
+    "C",
+    "Q",
+    "M",
+    "RF",
+    "PI",
+    "AR"
+  ],
+  "passthrough_metrics": [
+    "FI"
+  ],
+  "route_semantics": {
+    "selection": "highest-precedence eligible candidate",
+    "empty_candidate_fallback": "REVIEW",
+    "permissive_candidate_selection": "RELEASE if eligible; LIMIT only otherwise",
+    "precedence_does_not_determine_candidate_eligibility": true,
+    "malformed_input_excludes": [
+      "LIMIT",
+      "RELEASE"
+    ],
+    "zero_parseable_fields_route": "ABSTAIN",
+    "release_route_is_production_authorization": false
+  },
   "observation": {
-    "required": ["observation_id", "source", "check_id", "status", "severity", "provenance"],
-    "statuses": ["pass", "fail", "unknown", "not_applicable"],
+    "required": [
+      "observation_id",
+      "source",
+      "check_id",
+      "status",
+      "severity",
+      "provenance"
+    ],
+    "statuses": [
+      "pass",
+      "fail",
+      "unknown",
+      "not_applicable"
+    ],
     "provenance_required": true
+  },
+  "serialization": {
+    "owner": "MELLA",
+    "canonical_spec_status": "not-located",
+    "observed_harness": "json.dumps(indent=2) followed by Path.write_text with platform defaults",
+    "same_runtime_result_bytes_reproduced": true,
+    "archived_result_bytes_reproduced_on_windows": false,
+    "archived_result_semantics_reproduced": true,
+    "receipt_contains_wall_clock_timestamp": true,
+    "receipt_bytes_reproduced": false,
+    "cross_runtime_canonical_replay_verified": false,
+    "public_serializer_implementation": false
   },
   "known_open_dependency": {
     "id": "PACKET_2_FINDING_001",
-    "description": "Monotonicity discontinuity at M >= 0.35 boundary; must be resolved or explicitly accepted by the authoritative kernel test/spec layer before relying on the boundary for automated routing."
+    "status": "reproduced-on-pinned-reference-unpatched",
+    "description": "Signed per-field monotonicity fails at empty REVIEW fallback boundaries: M >= 0.35 and readiness RF >= 0.40.",
+    "sampled_violating_fields": [
+      "E",
+      "KC"
+    ],
+    "candidate_fix_adopted": false,
+    "governance_approval_verified": false
+  },
+  "additional_dependency": {
+    "id": "PACKET_2_FINDING_002",
+    "status": "mechanism-verified-intent-unresolved",
+    "description": "RELEASE excludes LIMIT through ordered candidate eligibility; owner intent is not established by code behavior."
+  },
+  "integration_gate": {
+    "status": "HOLD",
+    "automated_routing_allowed": false,
+    "blockers": [
+      "v0.3.5-artifact-not-located",
+      "integer-requirement-unmet",
+      "canonical-serialization-and-replay-unbound",
+      "observation-to-vector-mapping-unbound",
+      "finding-001-unpatched-no-verified-acceptance",
+      "finding-002-intent-unresolved"
+    ],
+    "public_test_pass_authorizes_routing": false
   }
 }
