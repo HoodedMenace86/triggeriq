@@ -1,0 +1,46 @@
+# This verifies only the checked-in public TriggerIQ project.
+# It does not fetch private MELLA source or clear the MELLA integration HOLD.
+name: Public TriggerIQ regression
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-tests:
+    name: Python ${{ matrix.python-version }} / Ubuntu
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Check out public source
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # upstream v5 tag checked 2026-10-14
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # upstream v6 tag checked 2026-10-14
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Install pinned public test dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Run public regression suite (private reference deliberately unavailable)
+        env:
+          MELLA_KERNEL_PATH: ""
+        run: python -m pytest -q -ra
+
+      - name: Smoke-test documented scorer example
+        run: python score_posture.py examples/sample_assessment.json > /dev/null
+
+      - name: Smoke-test observation structure reviewer
+        run: python mella/review_observations.py examples/sample_observations.json > /dev/null
