@@ -28,6 +28,8 @@ Some names refer to subcomponents of the **same** control architecture, not sepa
 
 The public [TriggerIQ codebase](../) provides a dependency-light scorer, deterministic scoring rules, test fixtures, a source-visible observation-review path, and explicit limitations. See [the main README](../README.md), [MELLA contract](MELLA_KERNEL_INTEGRATION_v0.1.md), and [control boundary](CONTROL_BOUNDARY.md).
 
+**Start here:** Follow the [hands-on public reviewer walkthrough](REVIEWER_WALKTHROUGH.md) to run tests, inspect scorer output, check the synthetic evidence reviewer and observe the explicit authorization HOLD. No private tokens or private kernel downloads are required.
+
 That scoped code is **not** evidence that the entire Master System is publicly released, operationally integrated, or production-certified. Other work is private or in review-only candidate stages. Potential reviewers can request a controlled technical walkthrough, documentation, reproducible sanitized fixtures or access to a specifically approved private artifact.
 
 ## How claims are evaluated
