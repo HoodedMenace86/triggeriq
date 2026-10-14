@@ -1,4 +1,6 @@
 # TriggerIQ
+> **Larger system context:** TriggerIQ is a scoped public implementation, not the entire LazyBotz Master System. See the [public architecture guide](docs/LAZYBOTZ_PUBLIC_ARCHITECTURE.md) for component responsibilities, review boundaries and why private MELLA/Control Spine work must not be mistaken for a production-integrated release.
+
 
 Detect and score weak GitHub account security posture—especially on new or low-activity accounts—and emit concrete remediation triggers.
 
