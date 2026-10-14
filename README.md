@@ -6,6 +6,21 @@ Detect and score weak GitHub account security posture—especially on new or low
 
 TriggerIQ turns security observations into deterministic, evidence-backed triggers while explicitly separating API-visible, connector-visible, and human-manual checks.
 
+## Start here — reviewers and collaborators
+
+[![Public TriggerIQ regression](https://github.com/HoodedMenace86/triggeriq/actions/workflows/public-regression.yml/badge.svg)](https://github.com/HoodedMenace86/triggeriq/actions/workflows/public-regression.yml)
+
+| Goal | Inspect |
+| --- | --- |
+| Run the public implementation | [Scorer](score_posture.py) and [sample assessment](examples/sample_assessment.json) |
+| Reproduce tests | [Public Python CI](.github/workflows/public-regression.yml) and [CI claim boundaries](docs/CI_SCOPE.md) |
+| Follow a short technical walkthrough | [Reviewer walkthrough](docs/REVIEWER_WALKTHROUGH.md) |
+| Understand the wider architecture | [LazyBotz public guide](docs/LAZYBOTZ_PUBLIC_ARCHITECTURE.md) |
+| Check integration blockers | [MELLA public status](mella/STATUS.md) |
+| Propose a code/documentation improvement | [Contribution rules](CONTRIBUTING.md) and [security guidance](SECURITY.md) |
+
+**Executed GitHub evidence:** [October 14, 2026, PR run #38633058923](https://github.com/HoodedMenace86/triggeriq/actions/runs/38633058923) — Ubuntu Python 3.11, 3.12 and 3.13 each reported **55 passed / 1 skipped**; one private MELLA reference test was deliberately not executed. This validates the *public implementation only*. A passing workflow cannot approve MELLA routing or certify an account.
+
 ## Initial scope
 - GitHub account security posture
 - Public repository/profile surface
@@ -112,11 +127,14 @@ Every assessment should retain evidence provenance. Never store credentials, rec
 
 This repository is the intended public/Grok-facing surface. Sensitive source repositories remain private unless their contents have first been sanitized and deliberately published here.
 
-## Next steps
+## Next engineering gates
 
-1. Freeze and review the trigger catalog.
-2. Validate scorer behavior against fixtures.
-3. Validate the MELLA adapter contract against the frozen kernel test vectors.
-4. Add GitHub API adapters only for explicitly authorized scopes.
-5. Add a GitHub Action after the core behavior is stable.
-6. Add issue creation only after false-positive behavior is tested.
+The public regression workflow and existing scorer fixtures now exist; they do not establish end-to-end readiness.
+
+1. Keep the trigger catalog and scorer fixture tests synchronized whenever behavior changes.
+2. Close or explicitly retain the **MELLA integration HOLD** on exact reference, numeric contract, serialization, mapping and governance findings before any automated routing.
+3. Add GitHub API adapters only when the permission scope, evidence provenance and false-positive behavior are documented and approved.
+4. Validate issue-creation and external-effect workflows separately before enabling actions that change user or repository state.
+5. Preserve the distinction between public demonstrations, private experimental PRs and independently reproduced integration evidence.
+
+Contributions and vulnerability reports must follow [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md); do not expose credentials or private kernel material.
