@@ -47,6 +47,17 @@ The public [TriggerIQ codebase](../) provides a dependency-light scorer, determi
 
 That scoped code is **not** evidence that the entire Master System is publicly released, operationally integrated, or production-certified. Other work is private or in review-only candidate stages. Potential reviewers can request a controlled technical walkthrough, documentation, reproducible sanitized fixtures or access to a specifically approved private artifact.
 
+## Reproducible public CI evidence (2026-10-14)
+
+The existing [public regression workflow](../.github/workflows/public-regression.yml) has a [successful GitHub Actions run #38633058923](https://github.com/HoodedMenace86/triggeriq/actions/runs/38633058923) tied to PR #3 head `6a4b572e417f449fd34c2a653303893df9fe142d`.
+
+- Ubuntu CPython 3.11 — **55 passed, 1 skipped**.
+- Ubuntu CPython 3.12 — **55 passed, 1 skipped**.
+- Ubuntu CPython 3.13 — **55 passed, 1 skipped**.
+- Both public example commands completed on all three platforms.
+
+The skipped test intentionally requires private MELLA source absent from public runners. This is independent *GitHub-hosted execution* of public tests, **not** independent reimplementation, private-kernel reproduction, production certification, or TriggerIQ→MELLA integration approval. See [CI scope](CI_SCOPE.md) for the complete boundary.
+
 ## How claims are evaluated
 
 1. **Implemented**: locate source code and exact revision.
