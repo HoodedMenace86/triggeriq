@@ -17,7 +17,7 @@ python -m pip install -r requirements-dev.txt
 python -m pytest -q -ra
 ```
 
-Read the test report. `tests/test_mella_compatibility.py::test_pinned_external_reference` **skips** when `MELLA_KERNEL_PATH` is not supplied. Do not count the private reference as reproduced by this command. CI, if configured, has the same boundary.
+Read the test report. `tests/test_mella_compatibility.py::test_pinned_external_reference` **skips** when `MELLA_KERNEL_PATH` is not supplied. Do not count the private reference as reproduced by this command. The checked-in [public CI workflow](CI_SCOPE.md) preserves the same boundary. [This verified run](https://github.com/HoodedMenace86/triggeriq/actions/runs/38633058923) passed on Python 3.11, 3.12 and 3.13 with the expected skip in each job.
 
 ### 2. Run the deterministic scorer
 
