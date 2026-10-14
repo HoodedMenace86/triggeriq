@@ -24,6 +24,21 @@ The design priorities are **freedom over control**, **human–machine integratio
 
 Some names refer to subcomponents of the **same** control architecture, not separate products or public GitHub repositories.
 
+## Conceptual trust boundary (not a deployed integration)
+
+```mermaid
+flowchart LR
+    INPUT["Scoped source observations"] --> TIQ["TriggerIQ scorer / observation reviewer"]
+    TIQ --> VERIFIED["Structured result: PASS, FAIL, UNKNOWN or N/A"]
+    VERIFIED -. "UNBOUND future contract" .-> MELLA["MELLA private governance"]
+    MELLA -. "not production-integrated" .-> SPINE["Control Spine / governed effect"]
+    SPINE -. "custody contract; not demonstrated here" .-> RECEIPT["Tallyman receipt"]
+    HARU["Haru handoff proposal"] -. "no authorization" .-> VERIFIED
+    CLOCK["Clock eligibility"] -. "not permission" .-> SPINE
+```
+
+Only the public scorer and observation-review logic are demonstrated in this repository. Dashed edges represent **intended or unverified contracts**, not operative links. Haru and independent clocks cannot authorize actions; Tallyman receipt custody is not implemented by the public scorer.
+
 ## What can actually be inspected today?
 
 The public [TriggerIQ codebase](../) provides a dependency-light scorer, deterministic scoring rules, test fixtures, a source-visible observation-review path, and explicit limitations. See [the main README](../README.md), [MELLA contract](MELLA_KERNEL_INTEGRATION_v0.1.md), and [control boundary](CONTROL_BOUNDARY.md).
