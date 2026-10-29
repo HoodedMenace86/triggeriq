@@ -1,6 +1,6 @@
 # Public TriggerIQ CI: exact scope and claim boundary
 
-**Status:** Public GitHub Actions workflow exists. Its [October 14, 2026 PR run #38633058923](https://github.com/HoodedMenace86/triggeriq/actions/runs/38633058923) completed successfully on historical head `6a4b572e417f449fd34c2a653303893df9fe142d`. This **does not establish CI status for later commits**, including the October 29 input-hardening candidate.
+**Status:** Public GitHub Actions workflow exists. Its [October 14, 2026 PR run #38633058923](https://github.com/HoodedMenace86/triggeriq/actions/runs/38633058923) completed successfully on historical head `6a4b572e417f449fd34c2a653303893df9fe142d`. Historical CI does **not** establish the status of later commits; verify every candidate against its own exact-head run.
 
 ## Workflow
 
@@ -19,7 +19,7 @@ For the **exact run commit and host environments**, the listed public tests and 
 
 ## Scorer input-ambiguity regression scope (2026-10-29 candidate)
 
-The existing `score_posture.py` command-line parser now rejects **duplicate JSON object keys at any nesting level**, `NaN`/`Infinity` constants and numeric tokens whose finite float conversion overflows. This closes a concrete last-key-wins ambiguity that could overwrite a failed check with a passing status. Tests exercise rejected malformed inputs and one valid unknown-status input. This is **proposed branch code** until its exact-head checks complete; it does not inspect evidence truth, validate account controls, or authorize any downstream action.
+The existing `score_posture.py` command-line parser now rejects **duplicate JSON object keys at any nesting level**, `NaN`/`Infinity` constants and numeric tokens whose finite float conversion overflows. This closes a concrete last-key-wins ambiguity that could overwrite a failed check with a passing status. Tests exercise rejected malformed inputs and one valid unknown-status input. This remains **review-branch code, not merged or production-authorized**, even after a successful exact-head CI run. It does not inspect evidence truth, validate account controls, or authorize any downstream action.
 
 ## What green does not prove
 
