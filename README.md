@@ -19,7 +19,9 @@ TriggerIQ turns security observations into deterministic, evidence-backed trigge
 | Check integration blockers | [MELLA public status](mella/STATUS.md) |
 | Propose a code/documentation improvement | [Contribution rules](CONTRIBUTING.md) and [security guidance](SECURITY.md) |
 
-**Executed GitHub evidence:** [October 14, 2026, PR run #38633058923](https://github.com/HoodedMenace86/triggeriq/actions/runs/38633058923) — Ubuntu Python 3.11, 3.12 and 3.13 each reported **55 passed / 1 skipped**; one private MELLA reference test was deliberately not executed. This validates the *public implementation only*. A passing workflow cannot approve MELLA routing or certify an account.
+**Current verified public CI (October 29, 2026):** [post-merge run #40928567606](https://github.com/HoodedMenace86/triggeriq/actions/runs/40928567606) completed successfully on the merged `main` commit `6919cde73fe00ef3198afb2c61d8934d543b051f`. Ubuntu Python 3.11, 3.12 and 3.13 each reported **62 passed / 1 expected private-reference skip**. This tests only the public scorer and observation-review scope; it is not private MELLA integration or account-wide security certification.
+
+**Historical GitHub evidence:** [October 14, 2026, PR run #38633058923](https://github.com/HoodedMenace86/triggeriq/actions/runs/38633058923) — Ubuntu Python 3.11, 3.12 and 3.13 each reported **55 passed / 1 skipped**; one private MELLA reference test was deliberately not executed. This validates the *public implementation only*. A passing workflow cannot approve MELLA routing or certify an account.
 
 ## Initial scope
 - GitHub account security posture
@@ -85,7 +87,7 @@ A failed check receives its full severity weight; an unknown check receives half
 
 Scorer output schema 0.2 uses `score: null` and `assessment_status: not_assessed`
 when no applicable checks exist. Consumers must handle a nullable score.
-Malformed checks, duplicate check IDs, and missing severities are rejected.
+Malformed checks, duplicate check IDs, and missing severities are rejected. The scorer CLI also rejects duplicate JSON object keys (including conflicting pass/fail statuses), `NaN`/`Infinity` and overflowing floating-point tokens before scoring. Its scored output remains a heuristic over supplied checks, never independently verified evidence.
 Scores cover only the checks supplied; even 100 is not an account-wide
 security certificate or MELLA release approval.
 
