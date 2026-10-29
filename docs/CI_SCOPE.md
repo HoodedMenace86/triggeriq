@@ -19,7 +19,7 @@ For the **exact run commit and host environments**, the listed public tests and 
 
 ## Scorer input-ambiguity regression scope (2026-10-29 candidate)
 
-The existing `score_posture.py` command-line parser now rejects **duplicate JSON object keys at any nesting level**, `NaN`/`Infinity` constants and numeric tokens whose finite float conversion overflows. This closes a concrete last-key-wins ambiguity that could overwrite a failed check with a passing status. Tests exercise rejected malformed inputs and one valid unknown-status input. This remains **review-branch code, not merged or production-authorized**, even after a successful exact-head CI run. It does not inspect evidence truth, validate account controls, or authorize any downstream action.
+The existing `score_posture.py` command-line parser now rejects **duplicate JSON object keys at any nesting level**, `NaN`/`Infinity` constants and numeric tokens whose finite float conversion overflows. This closes a concrete last-key-wins ambiguity that could overwrite a failed check with a passing status. Tests exercise rejected malformed inputs and one valid unknown-status input. This change concerns **public scorer input validation only**, regardless of whether the code is on a review branch or merged into `main`. A successful CI run does not inspect evidence truth, certify account controls, verify private MELLA integration, or authorize any downstream action.
 
 ## What green does not prove
 
