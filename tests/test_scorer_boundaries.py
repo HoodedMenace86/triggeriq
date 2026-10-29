@@ -1,3 +1,8 @@
+import json
+import subprocess
+import sys
+from pathlib import Path
+
 import pytest
 
 from score_posture import score
@@ -37,3 +42,42 @@ def test_existing_weighting_has_explicit_assessment_state(status,expected_score,
     assert result['score'] == expected_score
     assert result['assessment_status'] == expected_state
     assert result['applicable_checks'] == 1
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _score_cli(tmp_path, raw):
+    path = tmp_path / "assessment.json"
+    path.write_text(raw, encoding="utf-8")
+    return subprocess.run(
+        [sys.executable, str(ROOT / "score_posture.py"), str(path)],
+        capture_output=True, text=True, check=False,
+    )
+
+
+@pytest.mark.parametrize("raw", [
+    '{"checks":[{"id":"A","severity":"critical","status":"fail","status":"pass"}]}',
+    '{"checks":[],"checks":[{"id":"A","severity":"high","status":"pass"}]}',
+    '{"checks":[{"id":"A","severity":"high","status":"pass","title":NaN}]}',
+    '{"checks":[{"id":"A","severity":"high","status":"pass","title":Infinity}]}',
+    '{"checks":[{"id":"A","severity":"high","status":"pass","title":1e400}]}',
+    '{"checks":[{"id":"A","severity":"high","status":"pass","title":-1e400}]}',
+])
+def test_cli_rejects_ambiguous_json(tmp_path, raw):
+    proc = _score_cli(tmp_path, raw)
+    assert proc.returncode == 1
+    assert proc.stdout == ""
+    assert proc.stderr.startswith("ERROR: ")
+    assert "JSON" in proc.stderr
+
+
+def test_cli_strict_json_accepts_unambiguous_input(tmp_path):
+    proc = _score_cli(tmp_path, json.dumps({"checks": [
+        {"id": "A", "severity": "critical", "status": "unknown"}
+    ]}))
+    assert proc.returncode == 0, proc.stderr
+    result = json.loads(proc.stdout)
+    assert result["assessment_status"] == "verification_required"
+    assert result["unknown_count"] == 1
+    assert result["score"] == 50.0
