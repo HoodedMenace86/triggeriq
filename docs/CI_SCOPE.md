@@ -1,6 +1,6 @@
 # Public TriggerIQ CI: exact scope and claim boundary
 
-**Status:** Proposed automation. A YAML workflow committed to a branch is **not** evidence that a GitHub-hosted run succeeded.
+**Status:** Public GitHub Actions workflow exists. Its [October 14, 2026 PR run #38633058923](https://github.com/HoodedMenace86/triggeriq/actions/runs/38633058923) completed successfully on historical head `6a4b572e417f449fd34c2a653303893df9fe142d`. Historical CI does **not** establish the status of later commits; verify every candidate against its own exact-head run.
 
 ## Workflow
 
@@ -16,6 +16,10 @@
 ## What a green result would prove
 
 For the **exact run commit and host environments**, the listed public tests and examples executed successfully. Review job logs for failure, skipped cases and exact commands. Compare source revision and expected output claims directly.
+
+## Scorer input-ambiguity regression scope (2026-10-29 candidate)
+
+The existing `score_posture.py` command-line parser now rejects **duplicate JSON object keys at any nesting level**, `NaN`/`Infinity` constants and numeric tokens whose finite float conversion overflows. This closes a concrete last-key-wins ambiguity that could overwrite a failed check with a passing status. Tests exercise rejected malformed inputs and one valid unknown-status input. This change concerns **public scorer input validation only**, regardless of whether the code is on a review branch or merged into `main`. A successful CI run does not inspect evidence truth, certify account controls, verify private MELLA integration, or authorize any downstream action.
 
 ## What green does not prove
 
