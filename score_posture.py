@@ -3,12 +3,34 @@
 
 from __future__ import annotations
 import json
+import math
 import sys
 from pathlib import Path
 
 SEVERITY_WEIGHT = {"critical": 40.0, "high": 25.0, "medium": 10.0}
 STATUS_PENALTY = {"pass": 0.0, "fail": 1.0, "unknown": 0.5, "not_applicable": 0.0}
 ORDER = {"critical": 0, "high": 1, "medium": 2}
+
+
+def _unique_object(pairs):
+    """Reject duplicate fields before they can overwrite evidence status."""
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"Duplicate JSON key is not allowed: {key!r}")
+        result[key] = value
+    return result
+
+
+def _reject_constant(value):
+    raise ValueError(f"Non-finite JSON constant is not allowed: {value}")
+
+
+def _finite_float(raw):
+    value = float(raw)
+    if not math.isfinite(value):
+        raise ValueError("Non-finite JSON number is not allowed")
+    return value
 
 
 def score(assessment: dict) -> dict:
@@ -91,7 +113,12 @@ def main() -> int:
         print("Usage: python score_posture.py <assessment.json>", file=sys.stderr)
         return 2
     try:
-        assessment = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+        assessment = json.loads(
+            Path(sys.argv[1]).read_text(encoding="utf-8"),
+            object_pairs_hook=_unique_object,
+            parse_constant=_reject_constant,
+            parse_float=_finite_float,
+        )
         print(json.dumps(score(assessment), indent=2, sort_keys=True))
         return 0
     except (OSError, json.JSONDecodeError, ValueError) as exc:
